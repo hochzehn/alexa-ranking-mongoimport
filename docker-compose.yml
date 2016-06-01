@@ -1,0 +1,20 @@
+version: '2'
+services:
+  mongoimport:
+    build:
+      context: .
+    environment:
+      restmq: 192.168.99.100
+  mongodb:
+    image: mongo:3.2.6
+    ports:
+      - 27117:27017
+    networks:
+      - default
+    volumes_from:
+      - mongo_data
+  mongo_data:
+    image: busybox:1.24.2
+    volumes:
+      - /data/db
+      - /app/tmp

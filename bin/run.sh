@@ -1,10 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# Fill Queue
-bin/fill_queue.sh
+NAME="hochzehn/$(basename ${PWD})"
 
-# Read from RestMQ
-detectedjs=$(bin/run/load-from-restmq.sh)
+docker build --tag $NAME . > /dev/null
 
-# Write to Mongo
-bin/run/write-to-mongo.sh "$detectedjs"
+if [ $# -ne 1 ]
+then
+    echo "Usage: bin/run.sh RESTMQ_IP"
+else
+    docker run \
+      --rm \
+      $NAME \
+      $*
+fi
